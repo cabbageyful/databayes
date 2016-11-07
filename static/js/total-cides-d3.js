@@ -1,12 +1,99 @@
 
-var width = 475,
-    height = 500;
+// set the dimensions and margins of the graph
+var margin = {top: 20, right: 20, bottom: 30, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
-var svg = d3.select('#homicide'),
-    margin = {top: 30, right: 20, bottom: 30, left: 20},
-    width = +svg.attr(width) - margin.left - margin.right,
-    height = +svg.attr(height) - margin.top - margin.bottom,
-    g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+// parse the date / time
+var parseTime = d3.timeParse("%y");
+
+// set the ranges
+var x = d3.scaleTime().range([0, width]);
+var y0 = d3.scaleLinear().range([height, 0]);
+var y1 = d3.scaleLinear().range([height, 0]);
+
+// define the line
+var valueline = d3.line()
+    .x(function(d) { return x(d.Year); })
+    .y(function(d) { return y0(d.TotalBudget); });
+
+var valueline2 = d3.line()
+  .x(function(d) { return x(d.Year); })
+  .y(function(d) { return y1(d.TotalHomicides); });
+
+var valueline3 = d3.line()
+  .x(function(d) { return x(d.Year); })
+  .y(function(d) {return y0(d.CureViolencefunding); });
+
+// append the svg obgect to the body of the page
+// appends a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+var svg = d3.select("#homicide").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+// Get the data
+d3.csv("d3data.csv", function(error, data) {
+  if (error) throw error;
+
+  // format the data
+  data.forEach(function(d) {
+      d.Year = parseTime(d.Year);
+      d.TotalBudget = +d.TotalBudget;
+      d.TotalHomicides = +d.TotalHomicides;
+      d.CureViolencefunding = +d.CureViolencefunding;
+  });
+
+  // Scale the range of the data
+  x.domain(d3.extent(data, function(d) { return d.Year; }));
+  y0.domain([0, d3.max(data, function(d) { return Math.max(d.TotalBudget); })]);
+  y1.domain([0, d3.max(data, function(d) { return Math.max(d.TotalHomicides); })]);
+
+  // Add the valueline path.
+  svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .attr("d", valueline);
+
+  svg.append('path')
+      .data([data])
+      .attr('class', 'line')
+      .style('stroke', 'red')
+      .attr('d', valueline2);
+
+  svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style('stroke', 'green')
+      .attr("d", valueline3);
+
+  // Add the X Axis
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+  // Add the Y Axis
+  svg.append("g")
+      .attr('class', 'axisMoney')
+      .call(d3.axisLeft(y0));
+
+  svg.append("g")
+      .attr('class', 'axisDeath')
+      .call(d3.axisLeft(y1));
+});
+
+
+var margin = {top: 30, right: 20, bottom: 30, left: 20},
+    width = 500 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+var svg = d3.select('#homicide').append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 // Year,TotalHomicides
 var data = [
@@ -42,12 +129,17 @@ var line = d3.line()
 x.domain(d3.extent(data, function(d) { return data.year; }));
 y.domain(d3.extent(data, function(d) { return data.total; }));
 
-g.append('g')
+svg.append('path')
+    .data(data)
+    .attr('class', 'line')
+    .attr('d', line);
+
+svg.append('g')
     .attr('class', 'axis axis--x')
-    .attr('transform', 'transform', 'translate(0,' + height + ')')
+    .attr('transform', 'translate(0,' + height + ')')
     .call(d3.axisBottom(x));
 
-g.append('g')
+svg.append('g')
     .attr('class', 'axis axis--y')
     .call(d3.axisLeft(y))
  .append('text')
@@ -55,9 +147,4 @@ g.append('g')
     .attr('dy', '0.71em')
     .style('text-anchor', 'end')
     .text('Total Homicides');
-
-g.append('path')
-    .datum(data)
-    .attr('class', 'line')
-    .attr('d', line);
 
