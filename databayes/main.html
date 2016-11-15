@@ -99,7 +99,7 @@
 
 // set the dimensions and margins of the graph
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = 960 - margin.left - margin.right,
+    width = 800 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
 // parse the date / time
@@ -156,19 +156,25 @@ d3.csv("d3data.csv", function(error, data) {
   svg.append("path")
       .data([data])
       .attr("class", "line")
-      .attr("d", valueline);
+      .attr("d", valueline)
+      .append('svg:title')
+        .text(function(d) { return d.TotalBudget; });
 
   svg.append('path')
       .data([data])
       .attr('class', 'line')
       .style('stroke', 'red')
-      .attr('d', valueline2);
+      .attr('d', valueline2)
+      .append('svg:title')
+        .text(function(d) { return d.TotalHomicides; });
 
   svg.append("path")
       .data([data])
       .attr("class", "line")
       .style('stroke', 'green')
-      .attr("d", valueline3);
+      .attr("d", valueline3)
+      .append('svg:title')
+        .text(function(d) { return d.CureViolencefunding; });
 
   // Add the X Axis
   svg.append("g")
