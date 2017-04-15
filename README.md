@@ -1,6 +1,6 @@
 # Arguments for Cure Violence
 
-## Arguments for Cure Violence was created at a civic engagement hackathon whose focus was to address community violence and prevention. .
+## Arguments for Cure Violence was created at a civic engagement hackathon whose focus was to address community violence and prevention. 
 
 ## Contents
 * [Technologies Used](#technologiesused)
