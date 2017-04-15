@@ -25,7 +25,8 @@
 
 
 #### <a name="main"></a>Main Page
-![databayes](https://cloud.githubusercontent.com/assets/11432315/25067118/f186b790-21ee-11e7-8777-63098ba59930.gif)
+![databayes](https://cloud.githubusercontent.com/assets/11432315/25067150/7118cca0-21ef-11e7-8247-f224950891e6.gif)
+
 
 
 #### <a name="run"></a>How to Run Fandor_Challenge Locally
