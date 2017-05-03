@@ -29,7 +29,7 @@
 
 
 
-#### <a name="run"></a>How to Run Fandor_Challenge Locally
+#### <a name="run"></a>How to Run Arguments fro Cure Violence Locally
 
 ##### General Setup
 * Set up and activate a python virtualenv, and install all dependencies:
