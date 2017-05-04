@@ -1,7 +1,4 @@
-"""Spot server : ) """
-
-
-import os
+""" Cure Violence server """
 
 from flask import Flask, render_template
 from flask_debugtoolbar import DebugToolbarExtension
